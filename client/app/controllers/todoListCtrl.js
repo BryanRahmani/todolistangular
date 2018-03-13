@@ -8,17 +8,23 @@ angular.module('todoList').controller('todoListCtrl', ['$scope','$rootScope', 't
 	$scope.add = function(newtodo) {
 
 		$scope.newtodo.etat = "false";
-
-		$scope.todoList.push({'note' : newtodo.note , 'etat' :  newtodo.etat});
 		
-		//console.log(newtodo);
-
-		console.log(todoListFact);
-
-		todoListFact.save(newtodo);	
 
 		// fin de variable on vide le todo;
-		$scope.newtodo = "";
+
+		var addtodo = new todoListFact($scope.newtodo);
+
+		addtodo.$save();
+
+		$scope.todoList.push(addtodo);
+
+		$scope.newtodo = null;
+	}
+
+
+	$scope.finish = function(todo) {
+		console.log(todo);
+		todo.$update({'Id' : todo._id });
 	}
 
 }]);

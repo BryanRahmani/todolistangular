@@ -3,6 +3,7 @@ var express = require("express");
 var app = express();
 var mongoose = require('mongoose');
 var path = require('path');
+var _ = require('lodash');
 var bodyParser = require("body-parser");
 var urlencodedParser = bodyParser.urlencoded({ extended: false});
 
@@ -31,22 +32,24 @@ app.get ('/', function(req, res) {
 
 app.get('/todo', function (req, res) {
    todoModel.find({}, function (err, comms) {
-      if (err) { throw err; }
+      if (err) { 
+        throw err;
+      }
       // comms est un tableau de hash
      res.json(comms);
+   }).then(function(res2) {
+      console.log(res2);
    });
 });
 
 
 //ajouter une note
 app.post('/todo', function(req, res) {
-
-		console.log(req.body);
-			
-        var el = new todoModel(req.body);
-        el.save().then(function(req, res) {
-    });
-    return res.send("OK");
+    
+    var todo1 = new todoModel(req.body);
+    todo1.save().then(function(req, res) {
+      res.send(res);
+      });
 });
 
 
@@ -68,15 +71,13 @@ app.delete('/todo/:id', function(req, res) {
 
 //editer une note
 app.put('/todo/:id', function (req, res) {
-    let idfile = req.params.id;
-    let index = _findIndex(data, function (obj) {
-        return obj.ID == idfile
-    });
-    if (index >= 0) {
-        return res.json(data[index]);
-    } else{
-        return res.send(200,"object not found");
-    }
+  todoModel.findOne({"_id" : req.params.id}, '-__v -Rank', function(err,docs) {
+      if(err) {
+        res.json("'error':'l\'id est inexistant'");
+      } else {
+        return res.json(docs);
+      }
+  });
 })
 
 app.listen(8080);
