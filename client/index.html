@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<title>Todolist</title>
+</head>
+<body ng-app="todoList" ng-controller="todoListCtrl">
+	<p>TodoList</p>
+
+
+	<input type="text" placeholder="Que devez-vous faire ?" ng-model="newtodo.note"/>
+	<button ng-click="add(newtodo)">Ajouter</button>
+	
+	<ul>
+		<li ng-repeat="todo in todoList">
+			{{ todo.note }}
+		</li>
+	</ul>
+	
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-resource.min.js"></script>
+	
+	<script src="app/app.js"></script>
+
+	<script src="app/services/todoListFact.js"></script>
+	
+	<script src="app/controllers/todoListCtrl.js"></script>
+</body>
+</html>
