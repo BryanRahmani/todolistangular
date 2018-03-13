@@ -25,7 +25,7 @@ app.use("/app", express.static("client/app"));
 
 
 
-app.get ('/', function(req, res) {
+app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + "/client/index.html"));
 });
 
@@ -38,7 +38,6 @@ app.get('/todo', function (req, res) {
       // comms est un tableau de hash
      res.json(comms);
    }).then(function(res2) {
-      console.log(res2);
    });
 });
 
@@ -48,7 +47,8 @@ app.post('/todo', function(req, res) {
     
     var todo1 = new todoModel(req.body);
     todo1.save().then(function(req, res) {
-      res.send(res);
+      console.log(todo1);
+      res.send(todo1);
       });
 });
 
@@ -71,13 +71,16 @@ app.delete('/todo/:id', function(req, res) {
 
 //editer une note
 app.put('/todo/:id', function (req, res) {
-  todoModel.findOne({"_id" : req.params.id}, '-__v -Rank', function(err,docs) {
-      if(err) {
-        res.json("'error':'l\'id est inexistant'");
-      } else {
-        return res.json(docs);
-      }
-  });
+    let idfile = req.params.id;
+    let index = _findIndex(req.body, function (obj) {
+        return obj.ID == idfile
+    });
+
+    if (index >= 0) {
+        return res.json(data[index]);
+    } else{
+        return res.send(200,"object not found");
+    }
 })
 
 app.listen(8080);
