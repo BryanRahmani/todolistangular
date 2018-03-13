@@ -13,7 +13,8 @@
 	
 	<ul>
 		<li ng-repeat="todo in todoList">
-		<input type="checkbox" ng-click="finish(todo)" ng-model="newtodo.etat">{{ todo.note }}
+		<input type="checkbox" ng-click="finish(todo)" ng-model="todo.etat">{{ todo.note }}
+		Mon etat: {{ todo.etat }}
 		</li>
 	</ul>
 	

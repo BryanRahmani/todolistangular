@@ -46,42 +46,37 @@ app.get('/todo', function (req, res) {
 app.post('/todo', function(req, res) {
     
     var todo1 = new todoModel(req.body);
-    todo1.save().then(function(req, res) {
-      console.log(todo1);
-      res.send(todo1);
+    todo1.save(function(err, todo) {
+      if(err)
+      { 
+        console.log(err);
+      }
+      else
+      {
+        console.log(todo);
+        res.send(todo);
+      }
       });
 });
 
 
-//Supprimer une note
-app.delete('/todo/:id', function(req, res) {
-
- todo.remove({ _id: req.params.id }, function(err, todo) {
-    
-    if(err){
-      res.send(err);
-    }
-
-  })
- .then(function(todo) {
-
-       res.send(req.body);
-  });
-});
-
 //editer une note
 app.put('/todo/:id', function (req, res) {
-    let idfile = req.params.id;
-    let index = _findIndex(req.body, function (obj) {
-        return obj.ID == idfile
-    });
 
-    if (index >= 0) {
-        return res.json(data[index]);
-    } else{
-        return res.send(200,"object not found");
-    }
-})
+  console.log(req.body);
+
+    todoModel.findOneAndUpdate({ "_id": req.body._id }, req.body, function(err, todo) {
+      if(err)
+      { 
+        console.log(err);
+      }
+      else
+      {
+        console.log(todo);
+        res.send(todo);
+      }
+      });
+});
 
 app.listen(8080);
 

@@ -1,30 +1,36 @@
 angular.module('todoList').controller('todoListCtrl', ['$scope','$rootScope', 'todoListFact', function($scope, $rootScope, todoListFact) {
 
-	$scope.todoList = [];
+	todoListFact.query().$promise.then(function(success){
+		 console.log(success);
+		 $scope.todoList = success;
+	}, function(err) {
 
+	});
 
-	$scope.todoList = todoListFact.query();
+	console.log($scope.todoList);
 
 	$scope.add = function(newtodo) {
 
-		$scope.newtodo.etat = "false";
-		
+		newtodo.etat = false;
 
-		// fin de variable on vide le todo;
+		todoListFact.save(newtodo).$promise.then(function(succ) {
+			$scope.todoList.push(succ);
+			
+			console.log($scope.todoList);
 
-		var addtodo = new todoListFact($scope.newtodo);
+		}, function(err) {
+			console.log(err);
+		});
 
-		addtodo.$save();
 
-		$scope.todoList.push(addtodo);
-
-		$scope.newtodo = null;
 	}
 
 
 	$scope.finish = function(todo) {
+
 		console.log(todo);
-		todo.$update({'Id' : todo._id });
+
+		todo.$update({'Id' : todo._id});
 	}
 
 }]);
