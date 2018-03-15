@@ -7,7 +7,6 @@ var io = require('socket.io')(http);
 var mongoose = require('mongoose');
 
 var path = require('path');
-var _ = require('lodash');
 var bodyParser = require("body-parser");
 var urlencodedParser = bodyParser.urlencoded({ extended: false});
 
@@ -26,16 +25,21 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Parse le JSON. Ajout pas possible sans cette ligne
 app.use(bodyParser.json({ type: 'application/json' }));
 
+// Sert les fichiers (CSS, HTML, JS)
 app.use("/assets", express.static("client/static"));
+
+// Ont sert les controller,service,template (Angular JS)
 app.use("/app", express.static("client/app"));
 
 
 
+//Route qui gère la page index
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + "/client/index.html"));
 });
 
 
+// Route API qui affiche notre liste de tâche
 app.get('/todo', function (req, res) {
    todoModel.find({}, function (err, comms) {
       if (err) { 
@@ -48,7 +52,7 @@ app.get('/todo', function (req, res) {
 });
 
 
-//ajouter une note
+// Route API qui crée une nouvelle tâche
 app.post('/todo', function(req, res) {
     
     var todo1 = new todoModel(req.body);
@@ -59,7 +63,7 @@ app.post('/todo', function(req, res) {
       }
       else
       {
-        console.log(todo);
+        //console.log(todo);
         io.emit('newTodo', todo);
         res.send(todo);
       }
@@ -67,6 +71,7 @@ app.post('/todo', function(req, res) {
 });
 
 
+// Route API qui supprime une tâche
 app.delete('/todo/:id', function (req, res) {
 
   console.log(req.body);
@@ -81,7 +86,8 @@ app.delete('/todo/:id', function (req, res) {
     });
 });
 
-//editer une note
+
+//Route API qui change l'état d'une tâche
 app.put('/todo/:id', function (req, res) {
 
   console.log(req.body);
