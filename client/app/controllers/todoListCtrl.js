@@ -27,8 +27,8 @@ angular.module('todoList').controller('todoListCtrl', ['$scope','$rootScope', 't
 
 
 	$scope.delete = function(todo){
-
-		todo.$delete();
+		var newtodo = new todoListFact(todo);
+		newtodo.$delete();
 	}
 
 	socket.on('updateTodo', function (data) {
