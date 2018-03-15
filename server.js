@@ -1,7 +1,11 @@
 var http = require("http");
 var express = require("express");
-var app = express();
+
+var app = require('express')();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 var mongoose = require('mongoose');
+
 var path = require('path');
 var _ = require('lodash');
 var bodyParser = require("body-parser");
@@ -56,11 +60,11 @@ app.post('/todo', function(req, res) {
       else
       {
         console.log(todo);
+        io.emit('newTodo', todo);
         res.send(todo);
       }
       });
 });
-
 
 //editer une note
 app.put('/todo/:id', function (req, res) {
@@ -69,12 +73,13 @@ app.put('/todo/:id', function (req, res) {
 
     todoModel.findOneAndUpdate({ "_id": req.body._id }, req.body, function(err, todo) {
     }).then(function(succ) {
-      console.log(succ);
+      //console.log(succ);
+      io.emit('updateTodo', req.body);
       res.send(req.body);
     }, function(err) {
       res.send(err);
     });
 });
 
-app.listen(8080);
+http.listen(8080);
 
