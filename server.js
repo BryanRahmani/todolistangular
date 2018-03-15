@@ -34,11 +34,11 @@ app.get('/todo', function (req, res) {
    todoModel.find({}, function (err, comms) {
       if (err) { 
         throw err;
+      } else {
+        res.json(comms);
       }
       // comms est un tableau de hash
-     res.json(comms);
-   }).then(function(res2) {
-   });
+   })
 });
 
 
