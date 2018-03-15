@@ -16,12 +16,19 @@ angular.module('todoList').controller('todoListCtrl', ['$scope','$rootScope', 't
 
 		todoListFact.save(todo2).$promise.then(function(succ) {
 			
+		$scope.newtodo.note = "";
 
 		}, function(err) {
 			console.log(err);
 		});
 
 
+	}
+
+
+	$scope.delete = function(todo){
+
+		todo.$delete();
 	}
 
 	socket.on('updateTodo', function (data) {
@@ -34,6 +41,18 @@ angular.module('todoList').controller('todoListCtrl', ['$scope','$rootScope', 't
               $scope.$apply();     
 
     });
+
+    socket.on('deleteTodo', function (data) {
+                            
+             var index =  _.findIndex($scope.todoList, function(o, i) 
+             {      
+              		return o._id == data._id;
+             });
+              $scope.todoList.splice(index, 1);
+              $scope.$apply();     
+
+    });
+
 
 
 	socket.on('newTodo', function (data) {

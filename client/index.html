@@ -3,18 +3,65 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Todolist</title>
+	<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre.min.css">
+	<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
+	<link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
 </head>
+<style>
+	body.ng-scope {
+	    width: 800px !important;
+	    position: relative;
+	    margin: 0 auto;
+	    text-align: center;
+	}
+
+	input {
+	    border: none;
+	    padding: 13px;
+	    background-color: #f8f9f8;
+	}
+
+	li {
+		height: 52px;
+   		padding: 12px 18px 1px;
+		list-style-type: none;
+	    font-size: 18px;
+	}
+
+	li:nth-child(odd) {
+	    background-color: #f7f7f7;
+	}
+
+	ul {
+	    background-color: #fdfdfd;
+	    padding: 17px;
+	    border: solid 1px whitesmoke;
+	}
+
+	button {
+    float: right;
+    margin-top: -4px;
+	}
+</style>
 <body ng-app="todoList" ng-controller="todoListCtrl">
-	<p>TodoList</p>
+	<br/>
+	<h3>Todolist</h3>
 
-
-	<input type="text" placeholder="Que devez-vous faire ?" ng-model="newtodo.note"/>
-	<button ng-click="add(newtodo)">Ajouter</button>
-	
+	<form ng-submit="add(newtodo)">
+		<input type="text" placeholder="Que devez-vous faire ?" ng-model="newtodo.note" class="ng-valid ng-dirty ng-empty ng-touched" 
+		style="width: 500px;text-align:  center;">
+	</form>
 	<ul>
-		<li ng-repeat="todo in todoList">
-		<input type="checkbox" ng-click="finish(todo)" ng-model="todo.etat">{{ todo.note }}
-		Mon etat: {{ todo.etat }}
+		<li class="table table-striped table-hover" ng-repeat="todo in todoList">
+		<input type="checkbox" ng-click="finish(todo)" ng-model="todo.etat">
+		<span ng-if="todo.etat == false">
+		{{ todo.note }}
+		</span>
+		
+		<span ng-if="todo.etat == true">
+		<strike>{{ todo.note }}</strike>
+		</span>
+		<button ng-click="delete(todo)" class="btn btn-action circle"><i class="icon icon-delete"></i></button>
 		</li>
 	</ul>
 	

@@ -66,6 +66,21 @@ app.post('/todo', function(req, res) {
       });
 });
 
+
+app.delete('/todo/:id', function (req, res) {
+
+  console.log(req.body);
+
+    todoModel.remove({ "_id": req.params.id }, function(err, todo) {
+    }).then(function(succ) {
+      //console.log(succ);
+      io.emit('deleteTodo', { '_id' : req.params.id});
+      res.send(req.body);
+    }, function(err) {
+      res.send(err);
+    });
+});
+
 //editer une note
 app.put('/todo/:id', function (req, res) {
 
