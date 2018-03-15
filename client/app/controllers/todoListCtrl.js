@@ -14,6 +14,7 @@ angular.module('todoList').controller('todoListCtrl', ['$scope','$rootScope', 't
 		newtodo.etat = false;
 
 		todoListFact.save(newtodo).$promise.then(function(succ) {
+			
 			$scope.todoList.push(succ);
 			
 			console.log($scope.todoList);

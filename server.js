@@ -17,6 +17,8 @@ mongoose.connect('mongodb://localhost/Todolist', function(err) {
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
+
+
 // Parse le JSON. Ajout pas possible sans cette ligne
 app.use(bodyParser.json({ type: 'application/json' }));
 
@@ -66,16 +68,12 @@ app.put('/todo/:id', function (req, res) {
   console.log(req.body);
 
     todoModel.findOneAndUpdate({ "_id": req.body._id }, req.body, function(err, todo) {
-      if(err)
-      { 
-        console.log(err);
-      }
-      else
-      {
-        console.log(todo);
-        res.send(todo);
-      }
-      });
+    }).then(function(succ) {
+      console.log(succ);
+      res.send(req.body);
+    }, function(err) {
+      res.send(err);
+    });
 });
 
 app.listen(8080);
